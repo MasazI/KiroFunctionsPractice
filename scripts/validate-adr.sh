@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ADR の形式を確かめる。内容が正しいかどうかは確かめない（中身は人が git diff で確かめる）。
-# 使い方：./scripts/validate-adr.sh docs/decisions/0002-monthly-processing.md
+# 使い方：./scripts/validate-adr.sh docs/decisions/0001-monthly-processing.md
 set -euo pipefail
 
 if [ "$#" -ne 1 ]; then

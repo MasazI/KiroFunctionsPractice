@@ -3,11 +3,11 @@
   "hooks": [
     {
       "name": "validate-adr-after-spec-task",
-      "description": "Spec の task が終わったら、ADR 0002 の形式を確かめる",
+      "description": "Spec の task が終わったら、ADR 0001 の形式を確かめる",
       "trigger": "PostTaskExec",
       "action": {
         "type": "command",
-        "command": "./scripts/validate-adr.sh docs/decisions/0002-monthly-processing.md"
+        "command": "./scripts/validate-adr.sh docs/decisions/0001-monthly-processing.md"
       },
       "timeout": 60
     }

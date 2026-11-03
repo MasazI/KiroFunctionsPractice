@@ -4,7 +4,7 @@ Steering、Skill、MCP を使って技術の候補を調べて比べ、判断を
 
 - **所要時間**：約15分
 - **必要なもの**：Git、Kiro CLI 2.33 以上。AWS アカウント、Java、Node.js は不要です
-- **変えるファイル**：`docs/decisions/0003-online-api-runtime.md` だけ
+- **変えるファイル**：`docs/decisions/0002-online-api-runtime.md` だけ
 
 ## 題材
 
@@ -49,7 +49,7 @@ Kiro の入力欄に次を入力します。
 入力欄で先頭に `!` を付けると、Kiro を通さずにシェルのコマンドを実行できます。
 
 ```text
-!cat docs/decisions/0003-online-api-runtime.md
+!cat docs/decisions/0002-online-api-runtime.md
 ```
 
 見出しの下が「ここに記入」になっています。この演習で、ここを埋めます。
@@ -81,16 +81,16 @@ aws-mcp を使って次の3点を確認してください。ファイルはま�
 ```text
 オンライン API は、次に（Amazon ECS（AWS Fargate））で技術検証することにします。
 理由：（業務時間中ずっと使われ、データベースへの接続数を一定に保ちやすいため）。
-この判断と、さきほど確認した事実をもとに、ADR のひな形 docs/decisions/0003-online-api-runtime.md の「ここに記入」を埋めてください。
+この判断と、さきほど確認した事実をもとに、ADR のひな形 docs/decisions/0002-online-api-runtime.md の「ここに記入」を埋めてください。
 変更してよいのはこのファイルだけです。
 ```
 
-ファイルを変更してよいか聞かれたら、対象が `docs/decisions/0003-online-api-runtime.md` であることを確かめてから許可します。
+ファイルを変更してよいか聞かれたら、対象が `docs/decisions/0002-online-api-runtime.md` であることを確かめてから許可します。
 
 ## 6. ADR を検証する
 
 ```text
-ADR の検証スクリプト scripts/validate-adr.sh で docs/decisions/0003-online-api-runtime.md を確かめて、結果を教えてください。
+ADR の検証スクリプト scripts/validate-adr.sh で docs/decisions/0002-online-api-runtime.md を確かめて、結果を教えてください。
 ```
 
 コマンドを実行してよいか聞かれたら許可します。`ADR の検証に合格しました` と表示されれば合格です。
@@ -110,7 +110,7 @@ ADR の検証スクリプト scripts/validate-adr.sh で docs/decisions/0003-onl
 
 確かめること：
 
-- 変わったのは `docs/decisions/0003-online-api-runtime.md` だけ
+- 変わったのは `docs/decisions/0002-online-api-runtime.md` だけ
 - 事実に出典の URL と確認日が付いている
 - 「確認した事実」と「このプロジェクトへの推論」が分かれている
 - 最終決定ではなく、次に技術検証する候補として書かれている
@@ -118,7 +118,7 @@ ADR の検証スクリプト scripts/validate-adr.sh で docs/decisions/0003-onl
 ## 8. （任意）commit して共有する
 
 ```text
-いまの変更を commit してください。メッセージは「ADR-0003 オンライン API の実行基盤を記録」にしてください。push はしないでください。
+いまの変更を commit してください。メッセージは「ADR-0002 オンライン API の実行基盤を記録」にしてください。push はしないでください。
 ```
 
 チームで共有するときは、自分のリポジトリ（fork など）に push します。この配布用リポジトリには push できません。
@@ -142,4 +142,4 @@ commit した後にやり直すときは、`git switch workshop-start` のあと
 | 検証で「書きかけが残っています」と出る | 表示された行を埋めるよう Kiro に伝えます |
 | Kiro が範囲外の作業を始めた | `Esc` で止めます。変更が残ったら「やり直すとき」の手順で戻します |
 
-正解の例は `workshop-complete` ブランチの `docs/decisions/0003-online-api-runtime.md` にあります。
+正解の例は `workshop-complete` ブランチの `docs/decisions/0002-online-api-runtime.md` にあります。

@@ -39,21 +39,21 @@ kiro-cli --v3
 |---|---|---|
 | デモ1 | Plan モード、Steering | 技術検討で決めることと、決める順番を計画する。ファイルは変えない |
 | デモ2 | Skill、MCP | 月次処理の実行基盤を比べ、人が判断する。判断を Spec に書き足す |
-| デモ3 | Spec、Hook | Spec の task で ADR 0002 を書く。Hook が ADR を確かめ、人が `git diff` で確かめる。commit して共有する |
+| デモ3 | Spec、Hook | Spec の task で ADR 0001 を書く。Hook が ADR を確かめ、人が `git diff` で確かめる。commit して共有する |
 | デモ4 | 小さなプログラム | ADR の見積もりを、Java の1ファイルのプログラムで計算する |
-| 演習 | Steering、Skill、MCP | オンライン API の実行基盤を比べ、ADR 0003 を書く。手順は `LAB.md` |
+| 演習 | Steering、Skill、MCP | オンライン API の実行基盤を比べ、ADR 0002 を書く。手順は `LAB.md` |
 
 ## ブランチ
 
 | ブランチ | 内容 |
 |---|---|
 | `workshop-start` | 開始時の状態。ADR はひな形のまま |
-| `workshop-complete` | 記入例。ADR 0002 と 0003、デモ4のプログラムが入っている |
+| `workshop-complete` | 記入例。ADR 0001 と 0002、デモ4のプログラムが入っている |
 
 ## ADR を確かめる
 
 ```bash
-./scripts/validate-adr.sh docs/decisions/0002-monthly-processing.md
+./scripts/validate-adr.sh docs/decisions/0001-monthly-processing.md
 ```
 
 見出しがそろっているか、「ここに記入」などの書きかけが残っていないか、事実に出典の URL があるかを確かめます。内容が正しいかどうかは確かめません。中身は人が `git diff` で確かめます。
