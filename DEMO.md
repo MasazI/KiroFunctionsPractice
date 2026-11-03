@@ -132,6 +132,12 @@ ADR の検証スクリプト scripts/validate-adr.sh で docs/decisions/0001-mon
 いまの変更を commit してください。メッセージは「ADR-0001 月次処理の実行基盤を記録」にしてください。push はしないでください。
 ```
 
+commit できたら、記録が残ったことを確かめます。
+
+```text
+!git log --oneline -3
+```
+
 チームで共有するときは、自分のリポジトリ（fork など）に push します。配布用のリポジトリには push できません。
 
 ## デモ3：小さなプログラムを Quick Spec で作る
