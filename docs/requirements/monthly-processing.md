@@ -1,4 +1,4 @@
-# 月次処理の実行基盤を決める：要件
+# 要件：月次処理
 
 ## 背景
 
@@ -14,6 +14,7 @@
 ## 決めること
 
 - 次に技術検証する実行基盤を1つ選ぶ。候補は、標準の AWS Lambda、Amazon ECS のタスク、AWS Batch の3つ。
+- 記録先：`docs/decisions/0001-monthly-processing.md`
 
 ## 決めないこと
 

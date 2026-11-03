@@ -1,6 +1,6 @@
 ---
 name: technology-selection
-description: 新規プロジェクトで、1つの論点について2～3個の技術の候補を比べ、判断を ADR に残すときに使う手順。決める順番を計画するだけのときは使わない。
+description: 新規プロジェクトで、1つの論点について2～3個の技術の候補を比べ、判断を ADR に残すときの手順。その進め方を計画するときにも使う。
 ---
 
 # 技術選定の手順
@@ -11,7 +11,7 @@ description: 新規プロジェクトで、1つの論点について2～3個の�
 
 ## 手順
 
-1. 決めること、要件、制約を確認する。`.kiro/steering/`、`docs/technology-decision-map.md`、関係する Spec を読む。
+1. 決めること、要件、制約を確認する。`.kiro/steering/`、`docs/technology-decision-map.md`、`docs/requirements/` を読む。
 2. 候補を2～3個に絞り、比べる観点を決める。
 3. 事実を公式の情報で確かめる。AWS のことは aws-mcp を使う。出典の URL と確認日を残す。
 4. 「確認した事実」「このプロジェクトへの推論」「未確認の事項」を分けて、比べた結果をまとめる。

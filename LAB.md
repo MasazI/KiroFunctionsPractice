@@ -44,15 +44,16 @@ Kiro の入力欄に次を入力します。
 
 `Esc` で閉じます。
 
-## 2. ADR のひな形を見る
+## 2. 要件と ADR のひな形を見る
 
 入力欄で先頭に `!` を付けると、Kiro を通さずにシェルのコマンドを実行できます。
 
 ```text
+!cat docs/requirements/online-api.md
 !cat docs/decisions/0002-online-api-runtime.md
 ```
 
-見出しの下が「ここに記入」になっています。この演習で、ここを埋めます。
+1つ目が要件、2つ目が ADR のひな形です。ひな形は、見出しの下が「ここに記入」になっています。この演習で、ここを埋めます。
 
 ## 3. Skill を呼び出す
 
@@ -60,11 +61,12 @@ Kiro の入力欄に次を入力します。
 /technology-selection
 ```
 
-技術選定の手順が読み込まれます。
+技術選定の手順書が読み込まれます。中身は `!cat .kiro/skills/technology-selection/SKILL.md` で見られます。Kiro が「何を決めるか」を聞いてきたら、次の手順4の入力で答えます。
 
 ## 4. MCP で事実を確かめる
 
 ```text
+要件 docs/requirements/online-api.md にあるオンライン API の実行基盤を決めます。
 aws-mcp を使って次の3点を確認してください。ファイルはまだ変更しないでください。
 1. AWS Lambda の SnapStart が対応している Java のバージョン
 2. 標準の AWS Lambda 関数のタイムアウトの上限
