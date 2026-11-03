@@ -4,8 +4,8 @@
 
 | 決めること | 候補の例 | 判断に必要な情報 | ADR |
 |---|---|---|---|
-| 月次処理の実行基盤 | 標準の AWS Lambda、Amazon ECS のタスク、AWS Batch | 最大件数、1件あたりの処理時間、再実行の方法 | 0001（デモ） |
-| オンライン API の実行基盤 | Amazon ECS（AWS Fargate）、AWS Lambda（SnapStart） | 1秒あたりのリクエスト数、応答時間の目標、データベースへの接続数 | 0002（演習） |
+| 月次処理の実行基盤 | 標準の AWS Lambda、Amazon ECS のタスク、AWS Batch | 最大件数、1件あたりの処理時間、再実行の方法 | 0001（ステップ2） |
+| オンライン API の実行基盤 | Amazon ECS（AWS Fargate）、AWS Lambda（SnapStart） | 1秒あたりのリクエスト数、応答時間の目標、データベースへの接続数 | 0002（自分で試す） |
 | Java のフレームワーク | Spring Boot、Quarkus、Micronaut | 業務の一部を作って比べた結果、更新の負担 | 未着手 |
 | フロントエンドのフレームワーク | Angular、React | チームの学びやすさ、保守する人 | 未着手 |
 | API の契約 | OpenAPI を中心にした REST | 画面の動き、互換性の方針 | 未着手 |

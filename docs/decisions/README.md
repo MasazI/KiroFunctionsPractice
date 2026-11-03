@@ -8,14 +8,14 @@ ADR（Architecture Decision Record）は、設計の判断を1件ずつ文書に
 
 - ファイル名：`NNNN-短い名前.md`（例：`0001-monthly-processing.md`）
 - 見出しは変えません。`scripts/validate-adr.sh` が見出しの文字列で確かめるためです
-- Kiro に頼むときは「テンプレート docs/decisions/template.md をもとに、docs/decisions/0001-monthly-processing.md を作って」のように、ファイル名まで伝えます
+- 要件（`docs/requirements/`）に「記録先」があれば、そのファイル名で作ります。Skill の手順にこの決まりが書いてあるので、Kiro に頼むときにファイル名を伝える必要はありません
 
 ## このサンプルで作る ADR
 
 | 番号 | 内容 | 作る場面 |
 |---|---|---|
-| 0001 | 月次処理の実行基盤 | デモ2 |
-| 0002 | オンライン API の実行基盤 | 演習 |
+| 0001 | 月次処理の実行基盤 | ステップ2（HANDS-ON.md） |
+| 0002 | オンライン API の実行基盤 | 自分で試す（HANDS-ON.md） |
 
 記入例は `workshop-complete` ブランチにあります。
 
