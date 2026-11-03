@@ -154,6 +154,8 @@ commit できたら、記録が残ったことを確かめます。
 
 JDK 11 以上が必要です。`java -version` で確かめてください。
 
+このサンプルには Hook（`.kiro/hooks/check-estimate-after-task.json`）が入っています。Spec の task が終わると、Hook が確認用のスクリプト `scripts/check-estimate.sh` を実行します。スクリプトは、できたプログラムをサンプルの引数で動かし、間違った引数ではちゃんと失敗することを確かめます。`/hooks` で一覧を見られます。
+
 ### (1) Spec を作る
 
 ```text
