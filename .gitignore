@@ -1,7 +1,7 @@
 # Kiro が Spec の task を実行したときに作る実行履歴
 .kiro/specs/*/tasks.meta.json
 
-# Java（デモ4）
+# Java（デモ3の見積もりプログラム）
 *.class
 
 # OS
