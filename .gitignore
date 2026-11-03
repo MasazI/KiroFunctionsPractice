@@ -1,0 +1,8 @@
+# Kiro が Spec の task を実行したときに作る実行履歴
+.kiro/specs/*/tasks.meta.json
+
+# Java（デモ4）
+*.class
+
+# OS
+.DS_Store
