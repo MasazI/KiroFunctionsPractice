@@ -38,7 +38,7 @@ kiro-cli --v3
 |---|---|
 | 要件 | `docs/requirements/`（月次処理、オンライン API） |
 | 決めることの一覧 | `docs/technology-decision-map.md` |
-| ADR（設計判断の記録） | `docs/decisions/`。判断・理由・見直す条件を残す |
+| ADR（設計判断の記録） | `docs/decisions/`。判断ごとに `template.md` から番号付きのファイルを作る |
 | aws-mcp が使えないときの資料 | `docs/evidence/aws-compute-options.md` |
 
 ## 当日の流れ
@@ -56,7 +56,7 @@ kiro-cli --v3
 
 | ブランチ | 内容 |
 |---|---|
-| `workshop-start` | 開始時の状態。ADR はひな形のまま |
+| `workshop-start` | 開始時の状態。ADR はテンプレート（`docs/decisions/template.md`）だけ |
 | `workshop-complete` | 記入例。ADR 0001 と 0002、デモ3の Spec（`.kiro/specs/monthly-estimate/`）とプログラム（`tools/MonthlyEstimate.java`） |
 
 ## ADR を確かめる
@@ -65,7 +65,7 @@ kiro-cli --v3
 ./scripts/validate-adr.sh docs/decisions/0001-monthly-processing.md
 ```
 
-見出しがそろっているか、「ここに記入」などの書きかけが残っていないか、事実に出典の URL があるかを確かめます。内容が正しいかどうかは確かめません。中身は人が `git diff` で確かめます。
+見出しがそろっていて本文があるか、テンプレートの書きかけが残っていないか、事実に出典の URL があるかを確かめます。内容が正しいかどうかは確かめません。中身は人が確かめます。
 
 ## 見積もりプログラムを確かめる（デモ3のあと）
 

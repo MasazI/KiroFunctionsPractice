@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ADR の形式を確かめる。内容が正しいかどうかは確かめない（中身は人が git diff で確かめる）。
+# ADR の形式を確かめる。内容が正しいかどうかは確かめない（中身は人が確かめる）。
 # 使い方：./scripts/validate-adr.sh docs/decisions/0001-monthly-processing.md
 set -euo pipefail
 
@@ -20,15 +20,25 @@ if [ ! -f "$adr" ]; then
 fi
 
 failed=0
-
-# 1. 見出しがそろっているか
 facts_heading='## Verified facts and sources（確認した事実と出典）'
+
+# 1. 見出しがそろっていて、どの見出しの下にも本文があるか（コメントだけは本文に数えない）
 while IFS= read -r heading; do
   if ! grep -Fqx -- "$heading" "$adr"; then
     echo "NG：見出しがありません：$heading" >&2
     failed=1
+    continue
   fi
-done <<'EOF'
+  body=$(awk -v h="$heading" '
+    $0 == h { in_section = 1; next }
+    in_section && /^## / { exit }
+    in_section { print }
+  ' "$adr" | sed -e 's/<!--.*-->//g' | tr -d '[:space:]')
+  if [ -z "$body" ]; then
+    echo "NG：見出しの下が空です：$heading" >&2
+    failed=1
+  fi
+done <<'LIST'
 ## Context（背景）
 ## Options considered（比較した選択肢）
 ## Verified facts and sources（確認した事実と出典）
@@ -36,11 +46,11 @@ done <<'EOF'
 ## Decision（判断）
 ## Unknowns and validation（未確認の事項と技術検証）
 ## Revisit conditions（見直す条件）
-EOF
+LIST
 
-# 2. 書きかけが残っていないか
-if grep -nE 'ここに記入|TBD|TODO' "$adr" >&2; then
-  echo "NG：書きかけが残っています（上の行）" >&2
+# 2. テンプレートの書きかけが残っていないか
+if grep -nE 'NNNN|YYYY-MM-DD|（決めたことの題名）|TBD|TODO' "$adr" >&2; then
+  echo "NG：テンプレートの書きかけが残っています（上の行）" >&2
   failed=1
 fi
 

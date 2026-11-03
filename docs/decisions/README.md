@@ -2,12 +2,22 @@
 
 ADR（Architecture Decision Record）は、設計の判断を1件ずつ文書に残すものです。何を、なぜ、どの条件で決めたかを残しておくと、あとから入った人も判断の理由を追えます。判断を見直すときの基準にもなります。
 
-## このリポジトリの ADR
+## 作り方
 
-| 番号 | 内容 | 使う場面 |
+判断が出るたびに、`template.md` をもとに番号付きのファイルを新しく作ります。
+
+- ファイル名：`NNNN-短い名前.md`（例：`0001-monthly-processing.md`）
+- 見出しは変えません。`scripts/validate-adr.sh` が見出しの文字列で確かめるためです
+- Kiro に頼むときは「テンプレート docs/decisions/template.md をもとに、docs/decisions/0001-monthly-processing.md を作って」のように、ファイル名まで伝えます
+
+## このサンプルで作る ADR
+
+| 番号 | 内容 | 作る場面 |
 |---|---|---|
 | 0001 | 月次処理の実行基盤 | デモ2 |
 | 0002 | オンライン API の実行基盤 | 演習 |
+
+記入例は `workshop-complete` ブランチにあります。
 
 ## 見出し
 
@@ -21,4 +31,12 @@ ADR（Architecture Decision Record）は、設計の判断を1件ずつ文書に
 | Unknowns and validation（未確認の事項と技術検証） | まだ分からないこと。技術検証で何を測り、どうなれば合格か |
 | Revisit conditions（見直す条件） | どうなったら判断を変えるか |
 
-見出しは変えません。`scripts/validate-adr.sh` が見出しの文字列で確かめるためです。
+## 検証スクリプトが確かめること
+
+`./scripts/validate-adr.sh docs/decisions/0001-monthly-processing.md`
+
+1. 7つの見出しがそろっていて、どの見出しの下にも本文がある
+2. テンプレートの書きかけ（`NNNN`、`YYYY-MM-DD` など）が残っていない
+3. 「確認した事実と出典」に出典の URL がある
+
+書いた内容が正しいかどうかは確かめません。中身は人が確かめます。

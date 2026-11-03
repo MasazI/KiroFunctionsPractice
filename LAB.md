@@ -4,7 +4,7 @@ Steering、Skill、MCP を使って技術の候補を調べて比べ、判断を
 
 - **所要時間**：約15分
 - **必要なもの**：Git、Kiro CLI 2.33 以上。AWS アカウント、Java、Node.js は不要です
-- **変えるファイル**：`docs/decisions/0002-online-api-runtime.md` だけ
+- **作るファイル**：`docs/decisions/0002-online-api-runtime.md` だけ
 
 ## 題材
 
@@ -44,16 +44,16 @@ Kiro の入力欄に次を入力します。
 
 `Esc` で閉じます。
 
-## 2. 要件と ADR のひな形を見る
+## 2. 要件と ADR のテンプレートを見る
 
 入力欄で先頭に `!` を付けると、Kiro を通さずにシェルのコマンドを実行できます。
 
 ```text
 !cat docs/requirements/online-api.md
-!cat docs/decisions/0002-online-api-runtime.md
+!cat docs/decisions/template.md
 ```
 
-1つ目が要件、2つ目が ADR のひな形です。ひな形は、見出しの下が「ここに記入」になっています。この演習で、ここを埋めます。
+1つ目が要件、2つ目が ADR のテンプレートです。判断が出るたびに、このテンプレートをもとに番号付きの ADR を新しく作ります。この演習では `docs/decisions/0002-online-api-runtime.md` を作ります。
 
 ## 3. Skill を呼び出す
 
@@ -76,18 +76,18 @@ aws-mcp を使って次の3点を確認してください。ファイルはま�
 
 ツールを実行してよいか聞かれたら、内容を読んでから1回だけ許可します。「常に許可」は選びません。
 
-## 5. 判断して、ADR に書かせる
+## 5. 判断して、ADR を作らせる
 
 括弧の中は、自分の判断と理由に書き換えて構いません。
 
 ```text
 オンライン API は、次に（Amazon ECS（AWS Fargate））で技術検証することにします。
 理由：（業務時間中ずっと使われ、データベースへの接続数を一定に保ちやすいため）。
-この判断と、さきほど確認した事実をもとに、ADR のひな形 docs/decisions/0002-online-api-runtime.md の「ここに記入」を埋めてください。
-変更してよいのはこのファイルだけです。
+この判断と、さきほど確認した事実をもとに、テンプレート docs/decisions/template.md から、新しい ADR docs/decisions/0002-online-api-runtime.md を作ってください。
+作ってよいのはこのファイルだけです。
 ```
 
-ファイルを変更してよいか聞かれたら、対象が `docs/decisions/0002-online-api-runtime.md` であることを確かめてから許可します。
+ファイルを作ってよいか聞かれたら、対象が `docs/decisions/0002-online-api-runtime.md` であることを確かめてから許可します。
 
 ## 6. ADR を検証する
 
@@ -99,20 +99,22 @@ ADR の検証スクリプト scripts/validate-adr.sh で docs/decisions/0002-onl
 
 検証スクリプトが確かめるのは、次の3つです。内容が正しいかどうかは確かめません。
 
-- 見出しが7つそろっている
-- 「ここに記入」などの書きかけが残っていない
+- 7つの見出しがそろっていて、どの見出しの下にも本文がある
+- テンプレートの書きかけ（`NNNN`、`YYYY-MM-DD` など）が残っていない
 - 「確認した事実と出典」に出典の URL がある
 
-## 7. 差分を自分の目で確かめる
+## 7. 中身を自分の目で確かめる
 
 ```text
 !git status --short
-!git diff
+!cat docs/decisions/0002-online-api-runtime.md
 ```
+
+新しく作られたファイルは `git diff` に出ないので、`git status` で一覧してから中身を表示します。
 
 確かめること：
 
-- 変わったのは `docs/decisions/0002-online-api-runtime.md` だけ
+- 作られたのは `docs/decisions/0002-online-api-runtime.md` だけ
 - 事実に出典の URL と確認日が付いている
 - 「確認した事実」と「このプロジェクトへの推論」が分かれている
 - 最終決定ではなく、次に技術検証する候補として書かれている
@@ -129,6 +131,8 @@ ADR の検証スクリプト scripts/validate-adr.sh で docs/decisions/0002-onl
 
 ```bash
 git restore .
+git clean -n         # 消えるファイルを先に確認する（作った ADR など）
+git clean -f -d      # 確認できたら消す
 git status --short   # 何も表示されなければ元どおり
 ```
 
@@ -140,8 +144,8 @@ commit した後にやり直すときは、`git switch workshop-start` のあと
 |---|---|
 | `/config` に Steering や Skill が出ない | workspace を信頼していません。Kiro を終了して起動し直し、「Trust, continue」を選びます |
 | `aws-mcp` が `running` にならない | ネットワークの制限が考えられます。手順4の代わりに `docs/evidence/aws-compute-options.md` を読ませます |
-| 検証で「見出しがありません」と出る | Kiro が見出しを書き換えています。「見出しは docs/decisions/README.md のとおりに戻してください」と伝えます |
-| 検証で「書きかけが残っています」と出る | 表示された行を埋めるよう Kiro に伝えます |
+| 検証で「見出しがありません」と出る | Kiro が見出しを書き換えています。「見出しは docs/decisions/template.md のとおりに戻してください」と伝えます |
+| 検証で「書きかけが残っています」「見出しの下が空です」と出る | 表示された箇所を埋めるよう Kiro に伝えます |
 | Kiro が範囲外の作業を始めた | `Esc` で止めます。変更が残ったら「やり直すとき」の手順で戻します |
 
 正解の例は `workshop-complete` ブランチの `docs/decisions/0002-online-api-runtime.md` にあります。
