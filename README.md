@@ -29,7 +29,7 @@ kiro-cli --v3
 | Steering | `.kiro/steering/` | いつも守るルール。毎回自動で読み込まれる |
 | Skill | `.kiro/skills/technology-selection/` | 技術選定の手順書。依頼が説明と合うと読み込まれる。`/technology-selection` で呼び出すこともできる |
 | MCP | `.kiro/settings/mcp.json` | 外の情報を調べる道具。AWS MCP Server の文書検索とリージョン確認だけを使う（認証不要） |
-| Hook | `.kiro/hooks/check-estimate-on-save.json` | Kiro が `tools/` の Java ファイルを作ったり変えたりしたら、試算ツールの確認（`scripts/check-estimate.sh`）を Kiro に頼む |
+| Hook | `.kiro/hooks/check-estimate-on-save.json` | Kiro が `tools/` の Java ファイルを作ったり変えたりしたら、試算ツールの受け入れテスト（`scripts/check-estimate.sh`）の実行を Kiro に頼む |
 
 ## 資料の置き場所
 
@@ -48,10 +48,10 @@ kiro-cli --v3
 |---|---|---|
 | 1 | Steering、Skill、Plan モード | リポジトリに置いた文脈を見る。月次処理の実行基盤をどう検討するかを、Plan モードで計画する |
 | 2 | MCP、ADR、Git | 計画に沿って AWS の事実を確かめ、人が決め、ADR 0001 を作る。確かめて commit する |
-| 3 | チャット、Hook | 所要時間の試算ツールをチャットで作り、Hook が動くことを確かめる |
+| 3 | テスト、チャット、Hook | 受け入れテストを先に動かして失敗を確かめ、所要時間の試算ツールをチャットで作り、Hook の依頼でテストに合格させる |
 | 自分で試す | 同じ流れ | オンライン API の実行基盤を決め、ADR 0002 を作る |
 
-依頼は短く書きます。ルール（Steering）、手順（Skill）、確かめる仕組み（検証スクリプト、Hook）はリポジトリに置いてあります。
+依頼は短く書きます。ルール（Steering）、手順（Skill）、確かめる仕組み（ADR の形式チェック、受け入れテスト、Hook）はリポジトリに置いてあります。
 
 ## ブランチ
 
@@ -60,7 +60,7 @@ kiro-cli --v3
 | `workshop-start` | 開始時の状態。ADR はテンプレート（`docs/decisions/template.md`）だけ |
 | `workshop-complete` | 記入例。ADR 0001 と 0002、ステップ3のツール（`tools/MonthlyEstimate.java`） |
 
-## ADR を確かめる
+## ADR の形式を確かめる
 
 ```bash
 ./scripts/validate-adr.sh docs/decisions/0001-monthly-processing.md
@@ -68,13 +68,13 @@ kiro-cli --v3
 
 見出しがそろっていて本文があるか、テンプレートの書きかけが残っていないか、事実に出典の URL があるかを確かめます。内容が正しいかどうかは確かめません。中身は人が確かめます。
 
-## 試算ツールを確かめる（ステップ3のあと）
+## 試算ツールのテスト（ステップ3の前後）
 
 ```bash
 ./scripts/check-estimate.sh
 ```
 
-サンプルの引数で実行できるか、不正な引数で失敗するかを確かめます。
+要件から決めた期待値（サンプルの引数、切り上げ、4時間と15分の境界）と、不正な引数で失敗することを確かめます。ツールを作る前に実行すると失敗します。
 
 ## ライセンス
 

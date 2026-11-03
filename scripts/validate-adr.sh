@@ -66,8 +66,8 @@ if ! awk -v h="$facts_heading" '
 fi
 
 if [ "$failed" -ne 0 ]; then
-  echo "ADR の検証に失敗しました：$1" >&2
+  echo "ADR の形式チェックに失敗しました：$1" >&2
   exit 1
 fi
 
-echo "ADR の検証に合格しました：$1"
+echo "ADR の形式チェックに合格しました：$1"

@@ -3,12 +3,12 @@
   "hooks": [
     {
       "name": "check-estimate-on-save",
-      "description": "Kiro が tools/ の Java ファイルを作ったり変えたりしたら、試算ツールの確認を Kiro に頼む",
+      "description": "Kiro が tools/ の Java ファイルを作ったり変えたりしたら、試算ツールの受け入れテストの実行を Kiro に頼む",
       "trigger": "PostFileSave",
       "matcher": "tools/[^/]+\\.java$",
       "action": {
         "type": "agent",
-        "prompt": "tools/ の Java ファイルが保存されました。./scripts/check-estimate.sh を実行して、結果を短く報告してください。失敗したら、docs/requirements/monthly-estimate.md の要件に沿って直してください。"
+        "prompt": "tools/ の Java ファイルが保存されました。受け入れテスト ./scripts/check-estimate.sh を実行して、結果を短く報告してください。失敗したら、テストは変えずに、docs/requirements/monthly-estimate.md の要件に沿ってツールを直してください。"
       }
     }
   ]

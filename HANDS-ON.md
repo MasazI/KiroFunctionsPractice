@@ -16,7 +16,7 @@
 | 依頼に関係のないファイルは変えない。commit と push は人が指示したときだけ | Steering（`.kiro/steering/product.md`）と許可の画面 |
 | 調べる → 比べる → 人に聞く → ADR を作る → 確かめる、の手順 | Skill（`.kiro/skills/technology-selection/SKILL.md`） |
 | ADR の書き方とファイル名 | テンプレート（`docs/decisions/template.md`）と、要件の「記録先」 |
-| ADR とツールの確認 | 検証スクリプト（`scripts/validate-adr.sh`）と、Hook が Kiro に頼む確認（`scripts/check-estimate.sh`） |
+| ADR とツールの確認 | ADR の形式チェック（`scripts/validate-adr.sh`）と、ツールの受け入れテスト（`scripts/check-estimate.sh`。Hook が Kiro に実行を頼む） |
 
 Kiro の答えや質問は、毎回少しずつ変わります。質問されたら、自分の考えで短く答えてください。そこが人が判断を足す場面です。
 
@@ -112,7 +112,7 @@ Kiro がテンプレート（`docs/decisions/template.md`）から、要件の�
 
 **ADR**（Architecture Decision Record）は設計判断の記録です。判断が出るたびに、テンプレートから番号付きのファイルを作ります。見出しの意味は `docs/decisions/README.md` にあります。
 
-### (4) 検証スクリプトで確かめる
+### (4) ADR の形式チェックで確かめる
 
 Kiro が `scripts/validate-adr.sh` の実行を求めてきたら許可します。このスクリプトは、ADR の形式を機械的に確かめます。
 
@@ -120,7 +120,7 @@ Kiro が `scripts/validate-adr.sh` の実行を求めてきたら許可します
 2. テンプレートの書きかけ（`NNNN` など）が残っていない
 3. 「確認した事実と出典」に出典の URL がある
 
-書いた内容が正しいかどうかは確かめません。そこは人が見ます。
+ADR は判断の記録なので、書いた内容がよいかどうかは確かめません。そこは人が見ます。
 
 ### (5) 中身を自分の目で確かめる
 
@@ -147,11 +147,13 @@ commit してください。
 
 チームで共有するときは、自分のリポジトリ（fork など）に push します。配布用のリポジトリには push できません。
 
-## ステップ3：小さなツールをチャットで作る
+## ステップ3：テストを先に置き、小さなツールをチャットで作る
 
 JDK 11 以上が必要です。`java -version` で確かめてください。
 
-このサンプルには Hook（`.kiro/hooks/check-estimate-on-save.json`）が入っています。Kiro が `tools/` の Java ファイルを作ったり変えたりするたびに、Hook が Kiro に、確認用のスクリプト `scripts/check-estimate.sh` の実行を頼みます。スクリプトは、できたツールをサンプルの引数で動かし、間違った引数ではちゃんと失敗することを確かめます。失敗したときは、Kiro が要件に沿って直します。
+このサンプルには、ツールより先に受け入れテスト（`scripts/check-estimate.sh`）が置いてあります。期待する値は、要件から決めてあります。たとえば、100万件を1000件ずつ20並列、1チャンク120秒で処理すると「1時間40分00秒 → 収まる」、ちょうど4時間は「収まる」、などです。
+
+もう1つ、Hook（`.kiro/hooks/check-estimate-on-save.json`）が入っています。Kiro が `tools/` の Java ファイルを作ったり変えたりするたびに、Hook が Kiro にテストの実行を頼みます。失敗したら、Kiro はテストを変えずに、要件に沿ってツールを直します。
 
 ### (1) 要件を見る
 
@@ -159,9 +161,17 @@ JDK 11 以上が必要です。`java -version` で確かめてください。
 !cat docs/requirements/monthly-estimate.md
 ```
 
-作るのは、件数と処理時間を渡すと、月次処理が4時間に収まりそうかを表示する小さなツールです。要件が決まっていて小さいので、Spec は使わずにチャットで頼みます。
+作るのは、件数と処理時間を渡すと、月次処理が4時間に収まりそうかを表示する小さなツールです。要件と出力の形が決まっていて小さいので、Spec は使わずにチャットで頼みます。
 
-### (2) チャットで頼む
+### (2) テストを先に動かして、失敗を確かめる
+
+```text
+!./scripts/check-estimate.sh
+```
+
+まだツールがないので、`NG：tools/MonthlyEstimate.java がありません` と出て失敗します。先に失敗を確かめ、作ったあとに合格させる、テスト駆動の進め方です。
+
+### (3) チャットで頼む
 
 ```text
 月次処理が4時間で終わりそうかを、件数と処理時間から計算する小さなツールを作りたいです。要件は docs/requirements/monthly-estimate.md にあります。
@@ -169,28 +179,41 @@ JDK 11 以上が必要です。`java -version` で確かめてください。
 
 Kiro が質問してきたら、自分の考えで短く答えます。ファイルの作成を求められたら、対象が `tools/MonthlyEstimate.java` であることを確かめて許可します。
 
-### (3) Hook の依頼で確かめる
-
-ファイルが保存されると、Hook が動き、Kiro が `./scripts/check-estimate.sh` の実行を求めてきます。許可します。
+ファイルが保存されると Hook が動き、Kiro が `./scripts/check-estimate.sh` の実行を求めてきます。許可します。
 
 ### (4) 成功を3つの確認で判断する
 
 | 確認 | 見る場所 | 成功の条件 |
 |---|---|---|
-| Kiro の報告 | チャットの返答 | 作ったファイルと、確かめた結果が書かれている |
-| 自動の検証 | `check-estimate.sh` の出力 | `試算ツールの確認に合格しました` |
-| 人の確認 | `!git status --short`、`!cat tools/MonthlyEstimate.java` | 増えたのは `tools/MonthlyEstimate.java` だけ |
+| Kiro の報告 | チャットの返答 | 作ったファイルと、テストの結果が書かれている |
+| 自動の検証 | 受け入れテストの出力 | `試算ツールのテストに合格しました` |
+| 人の確認 | `!git status --short`、`!cat tools/MonthlyEstimate.java`、下のコマンド | 増えたのは `tools/MonthlyEstimate.java` だけ。結果が手で計算した値と合う |
 
-確認のスクリプトは、手で `!./scripts/check-estimate.sh` と実行しても同じです。スクリプトが確かめるのは、ツールが動くかどうかだけです。計算が正しいかどうかは、人が中身を見て確かめます。
+自分の数字で動かし、テストの期待値が要件どおりかを手で確かめます。
+
+```text
+!java tools/MonthlyEstimate.java 1000000 1000 120 20
+```
+
+1000000件 ÷ 1000件 ＝ 1000チャンク、1000 ÷ 20 ＝ 50回、50回 × 120秒 ＝ 6000秒 ＝ 1時間40分です。テストが確かめるのは、テストに書いた例だけです。足りない例に気付いたら、テストに足します。
 
 ### うまくいかないとき
 
-完成例のツールに差し替えて、確認だけ試せます。
+完成例のツールに差し替えて、テストだけ試せます。
 
 ```bash
 git checkout workshop-complete -- tools/MonthlyEstimate.java
 ./scripts/check-estimate.sh
 ```
+
+### このあと、ふつうはどう進めるか
+
+1. ツールを commit します
+2. 試算の結果を ADR-0001 の「未確認の事項と技術検証」に足すよう、Kiro に頼みます。4時間に余裕がなければ、「見直す条件」に照らして候補を比べ直します
+3. 「AWS Batch で技術検証する計画を立てて」と、Plan モードで頼みます
+4. 検証用や本番のコードを作る段階では、要件と ADR を参照して Feature Spec を作ります。不具合は Bugfix Spec で直します
+5. テストの方針（テストのフレームワークとコマンド、先に失敗するテストを書くこと、テストの量の目安）を Steering に書きます。Kiro はそれに沿ってテストを作ります
+6. Kiro が同じ間違いをしたら Steering に1行足します。同じ確認を毎回頼んでいたら Hook にします。チームでは CI にも同じテストを置きます
 
 ## 自分で試す：オンライン API の実行基盤
 

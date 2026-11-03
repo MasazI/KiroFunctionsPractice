@@ -31,7 +31,7 @@ ADR（Architecture Decision Record）は、設計の判断を1件ずつ文書に
 | Unknowns and validation（未確認の事項と技術検証） | まだ分からないこと。技術検証で何を測り、どうなれば合格か |
 | Revisit conditions（見直す条件） | どうなったら判断を変えるか |
 
-## 検証スクリプトが確かめること
+## 形式チェック（validate-adr.sh）が確かめること
 
 `./scripts/validate-adr.sh docs/decisions/0001-monthly-processing.md`
 
