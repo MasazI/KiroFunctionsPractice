@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# 見積もりプログラム（tools/MonthlyEstimate.java）を実行して確かめる。
-# Spec の task が終わったあとに Hook から呼ばれる。手で実行してもよい。
+# 所要時間の試算ツール（tools/MonthlyEstimate.java）を実行して確かめる。
+# Kiro が tools/ の Java ファイルを保存すると、Hook の依頼で Kiro が実行する。手で実行してもよい。
 set -euo pipefail
 
 ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
@@ -27,4 +27,4 @@ if java "$prog" 10 0 1 1 >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "見積もりプログラムの確認に合格しました"
+echo "試算ツールの確認に合格しました"

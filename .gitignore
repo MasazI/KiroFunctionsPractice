@@ -1,7 +1,7 @@
 # Kiro が Spec の task を実行したときに作る実行履歴
 .kiro/specs/*/tasks.meta.json
 
-# Java（ステップ3の見積もりツール）
+# Java（ステップ3の試算ツール）
 *.class
 
 # OS

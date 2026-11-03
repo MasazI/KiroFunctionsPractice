@@ -16,7 +16,7 @@
 | 依頼に関係のないファイルは変えない。commit と push は人が指示したときだけ | Steering（`.kiro/steering/product.md`）と許可の画面 |
 | 調べる → 比べる → 人に聞く → ADR を作る → 確かめる、の手順 | Skill（`.kiro/skills/technology-selection/SKILL.md`） |
 | ADR の書き方とファイル名 | テンプレート（`docs/decisions/template.md`）と、要件の「記録先」 |
-| ADR とプログラムの確認 | 検証スクリプト（`scripts/validate-adr.sh`）と Hook（`scripts/check-estimate.sh`） |
+| ADR とツールの確認 | 検証スクリプト（`scripts/validate-adr.sh`）と、Hook が Kiro に頼む確認（`scripts/check-estimate.sh`） |
 
 Kiro の答えや質問は、毎回少しずつ変わります。質問されたら、自分の考えで短く答えてください。そこが人が判断を足す場面です。
 
@@ -47,7 +47,7 @@ KIRO_HOME="$HOME/kiro-try" kiro-cli --v3
 |---|---|
 | Steering | `product`、`technology-selection`、`aws-research`。ほかに Kiro に最初から入っている `architecture-selection`、`quick-spec`、`bug-fix` |
 | Skills | `technology-selection` |
-| Hooks | `check-estimate-after-spec-task` |
+| Hooks | `check-estimate-on-save` |
 | MCP | `aws-mcp` が `running` |
 
 入力欄で先頭に `!` を付けると、Kiro を通さずにシェルのコマンドを実行できます。
@@ -147,62 +147,50 @@ commit してください。
 
 チームで共有するときは、自分のリポジトリ（fork など）に push します。配布用のリポジトリには push できません。
 
-## ステップ3：小さなツールを Quick Spec で作る
+## ステップ3：小さなツールをチャットで作る
 
 JDK 11 以上が必要です。`java -version` で確かめてください。
 
-このサンプルには Hook（`.kiro/hooks/check-estimate-after-task.json`）が入っています。Spec の task が終わると、Hook が確認用のスクリプト `scripts/check-estimate.sh` を実行します。スクリプトは、できたツールをサンプルの引数で動かし、間違った引数ではちゃんと失敗することを確かめます。
+このサンプルには Hook（`.kiro/hooks/check-estimate-on-save.json`）が入っています。Kiro が `tools/` の Java ファイルを作ったり変えたりするたびに、Hook が Kiro に、確認用のスクリプト `scripts/check-estimate.sh` の実行を頼みます。スクリプトは、できたツールをサンプルの引数で動かし、間違った引数ではちゃんと失敗することを確かめます。失敗したときは、Kiro が要件に沿って直します。
 
-### (1) Spec を作る
-
-```text
-/spec new monthly-estimate
-```
-
-種類を聞かれたら `Quick Spec` を選び、作りたいものを伝えます。
+### (1) 要件を見る
 
 ```text
-docs/requirements/monthly-estimate.md の見積もりツールを作りたいです。
+!cat docs/requirements/monthly-estimate.md
 ```
 
-Quick Spec は、最初に確認の質問をまとめて出し、その答えをもとに要件・設計・タスクの3つの文書を、途中の確認なしで一度に作ります。たとえば「ちょうど4時間は収まるとしますか」のような、要件で決めていなかった点を聞いてきます。自分の考えで答えます。
+作るのは、件数と処理時間を渡すと、月次処理が4時間に収まりそうかを表示する小さなツールです。要件が決まっていて小さいので、Spec は使わずにチャットで頼みます。
 
-### (2) 3つの文書を見る
+### (2) チャットで頼む
 
 ```text
-/spec view monthly-estimate requirements
-/spec view monthly-estimate design
-/spec view monthly-estimate tasks
+月次処理が4時間で終わりそうかを、件数と処理時間から計算する小さなツールを作りたいです。要件は docs/requirements/monthly-estimate.md にあります。
 ```
 
-### (3) 実行する
+Kiro が質問してきたら、自分の考えで短く答えます。ファイルの作成を求められたら、対象が `tools/MonthlyEstimate.java` であることを確かめて許可します。
 
-```text
-/spec run monthly-estimate
-```
+### (3) Hook の依頼で確かめる
 
-「Choose which tasks to run」では `1. Run required tasks (recommended)` を選びます。ファイルの作成を求められたら、対象を確かめて許可します。
+ファイルが保存されると、Hook が動き、Kiro が `./scripts/check-estimate.sh` の実行を求めてきます。許可します。
 
 ### (4) 成功を3つの確認で判断する
 
 | 確認 | 見る場所 | 成功の条件 |
 |---|---|---|
-| Kiro の報告 | タスク実行画面 | `1/1 complete` |
-| 自動の検証 | Hook の結果 | `見積もりプログラムの確認に合格しました` |
-| 人の確認 | `!git status --short`、`!cat tools/MonthlyEstimate.java` | 増えたのは `.kiro/specs/monthly-estimate/` と `tools/MonthlyEstimate.java` だけ |
+| Kiro の報告 | チャットの返答 | 作ったファイルと、確かめた結果が書かれている |
+| 自動の検証 | `check-estimate.sh` の出力 | `試算ツールの確認に合格しました` |
+| 人の確認 | `!git status --short`、`!cat tools/MonthlyEstimate.java` | 増えたのは `tools/MonthlyEstimate.java` だけ |
 
-Hook の確認は、手で `./scripts/check-estimate.sh` を実行しても同じです。
+確認のスクリプトは、手で `!./scripts/check-estimate.sh` と実行しても同じです。スクリプトが確かめるのは、ツールが動くかどうかだけです。計算が正しいかどうかは、人が中身を見て確かめます。
 
 ### うまくいかないとき
 
-完成例の Spec を使って、実行だけ試せます。
+完成例のツールに差し替えて、確認だけ試せます。
 
 ```bash
-git checkout workshop-complete -- .kiro/specs/monthly-estimate
-sed -i '' 's/- \[x\]/- [ ]/' .kiro/specs/monthly-estimate/tasks.md   # Linux では sed -i 's/...'
+git checkout workshop-complete -- tools/MonthlyEstimate.java
+./scripts/check-estimate.sh
 ```
-
-そのあと `/spec run monthly-estimate` を実行します。
 
 ## 自分で試す：オンライン API の実行基盤
 
@@ -237,7 +225,7 @@ git reset --hard origin/workshop-start   # commit も取り消す（手元の co
 
 ## 正解の例
 
-`workshop-complete` ブランチに、ADR 0001 と 0002 の記入例、ステップ3の Spec とツールがあります。
+`workshop-complete` ブランチに、ADR 0001 と 0002 の記入例と、ステップ3のツールがあります。
 
 ```bash
 git switch workshop-complete
